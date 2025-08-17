@@ -63,14 +63,18 @@ import { usePageDesignerMode } from '@salesforce/page-designer-react-sdk'
  * The page renders SEO metadata and a few promotion
  * categories and products, data is from local file.
  */
-const Home = () => {
+const Preview = () => {
     const intl = useIntl()
     const einstein = useEinstein()
     const dataCloud = useDataCloud()
     const {pathname} = useLocation() // This is the pathname of the page '/'
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
+    const design = searchParams.get('design') // Ideally this is a function by the Page Designer
+
     
-    console.log('Shopex Home Page Rendered')
-    const {data: page, error} = usePage({parameters: {pageId: 'testing'}})
+    const {data: page, error} = usePage({parameters: {pageId: 'homepage-example'}})
+
 
     if (error) {
         console.log('Shopex API Error', error)
@@ -78,7 +82,7 @@ const Home = () => {
 
     if (page) {
         console.log('Shopex API Data: ', page)
-        console.log('Shopex Params:', usePageDesignerMode().isDesignMode)
+        console.log('Shopex Params:', usePageDesignerMode())
     }
 
     const {res} = useServerContext()

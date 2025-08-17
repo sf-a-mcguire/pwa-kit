@@ -78,6 +78,8 @@ export type ApiClientConfigParams = {
     shortCode: string
     locale?: string
     currency?: string
+    design?: boolean
+    token?: string
 }
 
 /**

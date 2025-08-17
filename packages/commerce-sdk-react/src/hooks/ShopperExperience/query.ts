@@ -12,6 +12,7 @@ import {mergeOptions, omitNullableParameters, pickValidParams} from '../utils'
 import * as queryKeyHelpers from './queryKeyHelpers'
 import {CLIENT_KEYS} from '../../constant'
 import useCommerceApi from '../useCommerceApi'
+import { usePageDesignerMode } from '@salesforce/page-designer-react-sdk/src/context/usePageDesignerMode'
 
 const CLIENT_KEY = CLIENT_KEYS.SHOPPER_EXPERIENCE
 type Client = NonNullable<ApiClients[typeof CLIENT_KEY]>
@@ -87,10 +88,22 @@ export const usePage = (
     const client = useCommerceApi(CLIENT_KEY)
     const methodName = 'getPage'
     const requiredParameters = ShopperExperience.paramKeys[`${methodName}Required`]
+    const { isDesignMode } = usePageDesignerMode()
 
     // Parameters can be set in `apiOptions` or `client.clientConfig`;
     // we must merge them in order to generate the correct query key.
     const netOptions = omitNullableParameters(mergeOptions(client, apiOptions))
+    
+    // Add design=true parameter if in design mode
+    if (netOptions.parameters) { 
+        netOptions.parameters = {
+            ...netOptions.parameters,
+            design: isDesignMode
+        }
+    }
+    console.log('Shopex netOptions', netOptions.parameters)
+    console.log('Shopex USEPAGE')
+    
     const parameters = pickValidParams(
         netOptions.parameters,
         ShopperExperience.paramKeys[methodName]

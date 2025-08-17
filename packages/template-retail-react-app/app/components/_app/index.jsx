@@ -83,7 +83,7 @@ import {
 import Seo from '@salesforce/retail-react-app/app/components/seo'
 import {getPathWithLocale} from '@salesforce/retail-react-app/app/utils/url'
 
-import {DesignModeProvider} from '@salesforce/page-designer-react-sdk/src/context/DesignModeContext'
+import {DesignModeProvider} from '@salesforce/page-designer-react-sdk'
 import {initDesignerRuntime} from '@salesforce/page-designer-react-sdk/src/core/registry'
 import {registerDesignComponents} from '@salesforce/retail-react-app/app/page-designer/config/register-components'
 
