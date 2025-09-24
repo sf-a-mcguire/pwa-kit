@@ -88,22 +88,23 @@ export const usePage = (
     const client = useCommerceApi(CLIENT_KEY)
     const methodName = 'getPage'
     const requiredParameters = ShopperExperience.paramKeys[`${methodName}Required`]
-    const { isDesignMode } = usePageDesignerMode()
+    const { isDesignMode,isPreviewMode, token } = usePageDesignerMode()
 
     // Parameters can be set in `apiOptions` or `client.clientConfig`;
     // we must merge them in order to generate the correct query key.
     const netOptions = omitNullableParameters(mergeOptions(client, apiOptions))
     
     // Add design=true parameter if in design mode
-    if (netOptions.parameters) { 
+    if (netOptions.parameters) {
         netOptions.parameters = {
             ...netOptions.parameters,
-            design: isDesignMode
+            mode: isDesignMode ? 'EDIT' : isPreviewMode ? 'PREVIEW' : undefined,
+            token: token ?? undefined
         }
     }
     console.log('Shopex netOptions', netOptions.parameters)
-    console.log('Shopex USEPAGE')
-    
+    console.log('Shopex USEPAGE token', token)
+
     const parameters = pickValidParams(
         netOptions.parameters,
         ShopperExperience.paramKeys[methodName]

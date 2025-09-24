@@ -23,6 +23,7 @@ export interface ComponentConfig {
 
 type DesignModeContextType = {
     isDesignMode: boolean
+    token?: string
     setOnMessage: (handler?: (event: MessageEvent) => void) => void
 }
 
@@ -38,7 +39,12 @@ export const DesignModeProvider = ({children, componentConfigs = []}: DesignMode
 
     const isDesignMode = useMemo(() => {
         const query = new URLSearchParams(location.search)
-        return query.get('design') === 'true'
+        return query.get('mode') === 'EDIT'
+    }, [location.search])
+
+    const token = useMemo(() => {
+        const query = new URLSearchParams(location.search)
+        return query.get('token') ?? undefined
     }, [location.search])
 
     const [_, setOnMessage] = useState<((event: MessageEvent) => void) | undefined>()
@@ -92,14 +98,15 @@ export const DesignModeProvider = ({children, componentConfigs = []}: DesignMode
         return () => {
             document.querySelector('[data-pd-style]')?.remove()
         }
-    }, [isDesignMode, componentConfigs])
+    }, [isDesignMode, token, componentConfigs])
 
     const contextValue = useMemo<DesignModeContextType>(
         () => ({
             isDesignMode,
+            token,
             setOnMessage
         }),
-        [isDesignMode]
+        [isDesignMode, token]
     )
 
     return <DesignModeContext.Provider value={contextValue}>{children}</DesignModeContext.Provider>

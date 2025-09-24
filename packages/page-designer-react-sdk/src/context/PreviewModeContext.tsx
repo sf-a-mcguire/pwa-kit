@@ -17,7 +17,7 @@ export const PreviewModeProvider = ({children}: {children: React.ReactNode}) => 
 
     const isPreviewMode = useMemo(() => {
         const query = new URLSearchParams(location.search)
-        return query.get('preview') === 'true'
+        return query.get('mode') === 'PREVIEW'
     }, [location.search])
 
     const [_, setOnMessage] = useState<((event: MessageEvent) => void) | undefined>()

@@ -65,7 +65,7 @@ function isDesignModeActive() {
         return (
             typeof window !== 'undefined' &&
             window.self !== window.top &&
-            window.location.search.includes('design=true')
+            window.location.search.includes('mode=EDIT')
         )
     } catch {
         return false

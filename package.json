@@ -24,8 +24,8 @@
     "test:e2e:extra_features": "npx playwright test --project=extra-features-desktop --project=extra-features-mobile"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.0",
     "@axe-core/playwright": "^4.10.1",
+    "@playwright/test": "^1.49.0",
     "commander": "^9.5.0",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-no-relative-import-paths": "^1.5.3",
@@ -36,7 +36,7 @@
     "syncpack": "^10.1.0"
   },
   "engines": {
-    "node": "^16.11.0 || ^18.0.0 || ^20.0.0 || ^22.0.0",
+    "node": "^16.11.0 || ^18.0.0 || ^20.0.0 || ^22.0.0 || ^24.0.0",
     "npm": "^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0"
   },
   "dependencies": {

@@ -52,9 +52,8 @@ import {
     STALE_WHILE_REVALIDATE
 } from '@salesforce/retail-react-app/app/constants'
 import {useServerContext} from '@salesforce/pwa-kit-react-sdk/ssr/universal/hooks'
-import homeJson from './home.json'
+import homeJson from './home2.json'
 import {renderPage} from '../../utils/page-utils'
-import { usePageDesignerMode } from '@salesforce/page-designer-react-sdk'
 
 
 /**
@@ -70,7 +69,7 @@ const Home = () => {
     const {pathname} = useLocation() // This is the pathname of the page '/'
     
     console.log('Shopex Home Page Rendered')
-    const {data: page, error} = usePage({parameters: {pageId: 'testing'}})
+    const {data: page, error} = usePage({parameters: {pageId: 'homepage-example'}})
 
     if (error) {
         console.log('Shopex API Error', error)
@@ -78,7 +77,6 @@ const Home = () => {
 
     if (page) {
         console.log('Shopex API Data: ', page)
-        console.log('Shopex Params:', usePageDesignerMode().isDesignMode)
     }
 
     const {res} = useServerContext()
@@ -97,9 +95,10 @@ const Home = () => {
 
     return (
         <Box data-testid="home-page" layerStyle="page">
-            {renderPage(homeJson)}
+            <div>Home Page</div>
+            {/* {renderPage(homeJson)} */}
 
-            {/* <Page page={page} components={{}}/> */}
+            <Page page={page} components={page.components || {}}/>
 
             {/* <Island hydrateOn={'visible'}>
                 <Section

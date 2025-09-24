@@ -8,6 +8,7 @@ export const usePageDesignerMode = () => {
 
     return {
         isDesignMode: designModeContext?.isDesignMode || false,
+        token: designModeContext?.token,
         isPreviewMode: previewModeContext?.isPreviewMode || false,
         isAnyModeActive: (designModeContext?.isDesignMode || false) || (previewModeContext?.isPreviewMode || false)
     }
