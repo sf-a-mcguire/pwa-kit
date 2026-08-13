@@ -36,7 +36,8 @@ module.exports = {
         '^@salesforce/mrt-utilities/data-store$': mrtMiddlewareDataStore,
         '^@salesforce/pwa-kit-dev/dist/utils/mrt-data-store-local-provider\\.js$':
             pwaKitDevLocalMrtDataStore,
-        '^@salesforce/pwa-kit-dev/utils/mrt-data-store-local-provider\\.js$': pwaKitDevLocalMrtDataStore
+        '^@salesforce/pwa-kit-dev/utils/mrt-data-store-local-provider\\.js$':
+            pwaKitDevLocalMrtDataStore
     },
     transformIgnorePatterns: [
         'node_modules/(?!(@salesforce/mrt-utilities|jsdom/lib/jsdom/browser/resources/resource-loader))'

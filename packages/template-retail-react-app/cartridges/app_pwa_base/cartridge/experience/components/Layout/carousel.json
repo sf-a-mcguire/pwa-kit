@@ -1,0 +1,96 @@
+{
+    "name": "Carousel",
+    "description": "Displays child components in a horizontally scrollable carousel with optional heading, navigation controls, and scroll indicators.",
+    "group": "commerce_layouts",
+    "arch_type": "headless",
+    "region_definitions": [
+        {
+            "id": "items",
+            "name": "Carousel Items",
+            "description": "Components to display as carousel slides."
+        }
+    ],
+    "attribute_definition_groups": [
+        {
+            "id": "carousel",
+            "name": "Carousel",
+            "description": "Displays child components in a horizontally scrollable carousel with optional heading, navigation controls, and scroll indicators.",
+            "attribute_definitions": [
+                {
+                    "id": "textHeadline",
+                    "name": "Heading",
+                    "type": "string",
+                    "required": false,
+                    "description": "Optional heading displayed above the carousel."
+                },
+                {
+                    "id": "xsCarouselSlidesToDisplay",
+                    "name": "Slides Visible (Mobile)",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["1", "2", "3", "4", "5", "6"],
+                    "default_value": "1",
+                    "description": "Number of slides visible at once on mobile (xs) screens."
+                },
+                {
+                    "id": "smCarouselSlidesToDisplay",
+                    "name": "Slides Visible (Tablet)",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["1", "2", "3", "4", "5", "6"],
+                    "default_value": "1",
+                    "description": "Number of slides visible at once on tablet (sm) screens."
+                },
+                {
+                    "id": "mdCarouselSlidesToDisplay",
+                    "name": "Slides Visible (Desktop)",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["1", "2", "3", "4", "5", "6"],
+                    "default_value": "1",
+                    "description": "Number of slides visible at once on desktop (md+) screens."
+                },
+                {
+                    "id": "xsCarouselControls",
+                    "name": "Show Controls (Mobile)",
+                    "type": "boolean",
+                    "required": false,
+                    "default_value": false,
+                    "description": "Show previous/next navigation buttons on mobile screens."
+                },
+                {
+                    "id": "smCarouselControls",
+                    "name": "Show Controls (Tablet)",
+                    "type": "boolean",
+                    "required": false,
+                    "default_value": false,
+                    "description": "Show previous/next navigation buttons on tablet screens."
+                },
+                {
+                    "id": "xsCarouselIndicators",
+                    "name": "Show Scroll Indicator (Mobile)",
+                    "type": "boolean",
+                    "required": false,
+                    "default_value": false,
+                    "description": "Show scrollbar indicator on mobile screens."
+                },
+                {
+                    "id": "smCarouselIndicators",
+                    "name": "Show Scroll Indicator (Tablet)",
+                    "type": "boolean",
+                    "required": false,
+                    "default_value": false,
+                    "description": "Show scrollbar indicator on tablet screens."
+                },
+                {
+                    "id": "mdCarouselIndicators",
+                    "name": "Show Scroll Indicator (Desktop)",
+                    "type": "boolean",
+                    "required": false,
+                    "default_value": false,
+                    "description": "Show scrollbar indicator on desktop screens."
+                }
+            ]
+        }
+    ]
+}

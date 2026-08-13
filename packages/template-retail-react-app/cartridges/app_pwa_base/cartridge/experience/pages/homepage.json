@@ -1,0 +1,19 @@
+{
+    "name": "Homepage",
+    "description": "The main homepage for the storefront",
+    "arch_type": "headless",
+    "region_definitions": [
+        {
+            "id": "main",
+            "name": "Main Content",
+            "max_components": 10
+        },
+        {
+            "id": "secondary",
+            "name": "Secondary Content",
+            "max_components": 10
+        }
+    ],
+    "supported_aspect_types": [],
+    "route": "/"
+}

@@ -1,0 +1,23 @@
+{
+    "name": "Image Tile",
+    "description": "A simple image tile for use inside layout components.",
+    "group": "Assets",
+    "arch_type": "headless",
+    "region_definitions": [],
+    "attribute_definition_groups": [
+        {
+            "id": "imageTile",
+            "name": "Image Tile",
+            "description": "A simple image tile for use inside layout components.",
+            "attribute_definitions": [
+                {
+                    "id": "image",
+                    "name": "Image",
+                    "type": "image",
+                    "required": true,
+                    "description": "The image to display. Supports mobile, tablet, and desktop sources."
+                }
+            ]
+        }
+    ]
+}
