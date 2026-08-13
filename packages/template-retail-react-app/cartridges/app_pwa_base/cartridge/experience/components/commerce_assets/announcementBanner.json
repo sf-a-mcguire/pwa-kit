@@ -1,0 +1,64 @@
+{
+    "name": "Announcement Banner",
+    "description": "A banner for announcements, promotions, and alerts.",
+    "group": "commerce_assets",
+    "arch_type": "headless",
+    "region_definitions": [],
+    "attribute_definition_groups": [
+        {
+            "id": "announcementBanner",
+            "name": "Announcement Banner",
+            "description": "A banner for announcements, promotions, and alerts.",
+            "attribute_definitions": [
+                {
+                    "id": "message",
+                    "name": "Message",
+                    "type": "string",
+                    "required": true,
+                    "description": "The announcement text."
+                },
+                {
+                    "id": "linkUrl",
+                    "name": "Link URL",
+                    "type": "url",
+                    "required": false,
+                    "description": "Optional link target. Shown only when Link Text is also set."
+                },
+                {
+                    "id": "linkText",
+                    "name": "Link Text",
+                    "type": "string",
+                    "required": false,
+                    "description": "Optional link label. Shown only when Link URL is also set."
+                },
+                {
+                    "id": "colorScheme",
+                    "name": "Color Scheme",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["primary", "secondary", "destructive"],
+                    "default_value": "primary",
+                    "description": "Token-based color treatment for guaranteed contrast."
+                },
+                {
+                    "id": "height",
+                    "name": "Height",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["sm", "md", "lg"],
+                    "default_value": "md",
+                    "description": "Vertical density of the banner."
+                },
+                {
+                    "id": "alignment",
+                    "name": "Alignment",
+                    "type": "enum",
+                    "required": false,
+                    "values": ["left", "center", "right"],
+                    "default_value": "center",
+                    "description": "Horizontal alignment of the message."
+                }
+            ]
+        }
+    ]
+}

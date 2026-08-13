@@ -1,7 +1,7 @@
 {
     "name": "Image With Text",
     "description": "An image with an optional text overlay, caption, and link.",
-    "group": "Assets",
+    "group": "commerce_assets",
     "arch_type": "headless",
     "region_definitions": [],
     "attribute_definition_groups": [

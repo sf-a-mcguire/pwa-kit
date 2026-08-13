@@ -1,0 +1,23 @@
+{
+    "name": "Header",
+    "description": "Embedded header component that exposes an announcement region above the storefront header.",
+    "group": "commerce_layouts",
+    "arch_type": "headless",
+    "embedded": true,
+    "component_id": "header",
+    "region_definitions": [
+        {
+            "id": "announcement",
+            "name": "Announcement",
+            "description": "Displayed above the header."
+        }
+    ],
+    "attribute_definition_groups": [
+        {
+            "id": "header",
+            "name": "Header",
+            "description": "Global site header with an announcement region.",
+            "attribute_definitions": []
+        }
+    ]
+}

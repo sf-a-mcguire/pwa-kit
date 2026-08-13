@@ -1,7 +1,7 @@
 {
     "name": "Image Tile",
     "description": "A simple image tile for use inside layout components.",
-    "group": "Assets",
+    "group": "commerce_assets",
     "arch_type": "headless",
     "region_definitions": [],
     "attribute_definition_groups": [
