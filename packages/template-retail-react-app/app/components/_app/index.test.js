@@ -26,6 +26,15 @@ jest.mock('../../hooks/use-update-shopper-context', () => ({
 jest.mock('../../page-designer/registry', () => ({
     initializeRegistry: jest.fn()
 }))
+// In EDIT/PREVIEW mode the real PageDesignerProvider lazy-loads the runtime design
+// machinery (React.lazy → DesignContext), which the jsdom test environment can't mount.
+// The app-shell split is about *which* surface renders (chrome-free vs storefront), not
+// the design pipeline, so stub the provider to a passthrough — same approach as
+// app/pages/component-preview/index.test.js.
+jest.mock('@salesforce/commerce-sdk-react/page-designer', () => ({
+    ...jest.requireActual('@salesforce/commerce-sdk-react/page-designer'),
+    PageDesignerProvider: ({children}) => <>{children}</>
+}))
 
 let windowSpy
 
@@ -73,6 +82,8 @@ afterEach(() => {
     windowSpy.mockRestore()
     jest.restoreAllMocks()
     jest.resetModules()
+    // Reset the jsdom URL so a route-dependent test can't leak its location into the next.
+    window.history.pushState({}, '', '/')
 })
 describe('App', () => {
     const site = {
@@ -151,6 +162,27 @@ describe('App', () => {
 
         expect(hreflangLinks.some((link) => hasGeneralLocale(link))).toBe(true)
         expect(hreflangLinks.some((link) => link.hrefLang === 'x-default')).toBe(true)
+    })
+
+    test('renders the component-preview surface without storefront chrome', async () => {
+        useMultiSite.mockImplementation(() => resultUseMultiSite)
+        // BrowserRouter reads window.location, so put the app on the preview route.
+        window.history.pushState({}, '', '/uk/en-GB/preview/component?mode=EDIT')
+
+        renderWithProviders(
+            <App targetLocale={DEFAULT_LOCALE} defaultLocale={DEFAULT_LOCALE} messages={messages}>
+                <p>Preview child</p>
+            </App>
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Preview child')).toBeInTheDocument()
+        })
+        // The chrome-free preview surface renders the main region but no storefront
+        // header navigation or footer.
+        expect(screen.getByRole('main')).toBeInTheDocument()
+        expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
+        expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument()
     })
 
     test('App component updates the basket with correct currency and customer email', async () => {
