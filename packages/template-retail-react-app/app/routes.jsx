@@ -53,6 +53,8 @@ const Wishlist = loadable(() => import('./pages/account/wishlist'), {
 const PaymentProcessing = loadable(() => import('./pages/checkout/payment-processing'), {fallback})
 const PageNotFound = loadable(() => import('./pages/page-not-found'))
 
+const ComponentPreview = loadable(() => import('./pages/component-preview'), {fallback})
+
 export const routes = [
     {
         path: '/',
@@ -125,6 +127,10 @@ export const routes = [
     {
         path: '/store-locator',
         component: StoreLocator
+    },
+    {
+        path: '/preview/component',
+        component: ComponentPreview
     }
 ]
 
