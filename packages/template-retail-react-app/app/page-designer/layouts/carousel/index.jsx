@@ -15,7 +15,7 @@ import {
     useBreakpoint,
     useBreakpointValue
 } from '@salesforce/retail-react-app/app/components/shared/ui'
-import {Component, regionPropType} from '@salesforce/commerce-sdk-react/page-designer'
+import {Component} from '@salesforce/commerce-sdk-react/page-designer'
 import {ChevronLeftIcon, ChevronRightIcon} from '@salesforce/retail-react-app/app/components/icons'
 import {useEffect} from 'react'
 import {useIntl} from 'react-intl'
@@ -54,6 +54,7 @@ export const Carousel = (props = {}) => {
         smCarouselSlidesToDisplay = 1,
         mdCarouselSlidesToDisplay = 1,
         // Internally Provided
+        component: pageComponent,
         regions
     } = props
 
@@ -91,7 +92,8 @@ export const Carousel = (props = {}) => {
     }
     const overflowXScrollValue = useBreakpointValue(overflowXScroll)
 
-    const components = regions[0]?.components || []
+    const firstRegion = regions[0]
+    const components = firstRegion?.components || []
     const itemCount = components.length
 
     // Scroll the container left or right by 100%. Passing no args or `1`
@@ -155,7 +157,7 @@ export const Carousel = (props = {}) => {
                             style={{scrollSnapAlign: 'start'}}
                         >
                             <AspectRatio ratio={0.75}>
-                                <Component component={component} />
+                                <Component component={component} regionId={firstRegion?.id} />
                             </AspectRatio>
                         </Box>
                     ))}
@@ -213,7 +215,8 @@ export const Carousel = (props = {}) => {
 }
 
 Carousel.propTypes = {
-    regions: PropTypes.arrayOf(regionPropType).isRequired,
+    component: PropTypes.object.isRequired,
+    regions: PropTypes.array.isRequired,
     textHeadline: PropTypes.string,
     xsCarouselIndicators: PropTypes.bool,
     smCarouselIndicators: PropTypes.bool,

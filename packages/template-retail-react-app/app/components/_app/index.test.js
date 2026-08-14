@@ -18,6 +18,17 @@ import messages from '@salesforce/retail-react-app/app/static/translations/compi
 import mockConfig from '@salesforce/retail-react-app/config/mocks/default'
 import {prependHandlersToServer} from '@salesforce/retail-react-app/jest-setup'
 import {mockCustomerBaskets} from '@salesforce/retail-react-app/app/mocks/mock-data'
+import {
+    mockEmbeddedHeader,
+    mockAnnouncementBanner
+} from '@salesforce/retail-react-app/app/mocks/page-designer'
+import {AnnouncementBanner} from '@salesforce/retail-react-app/app/page-designer/content/announcement-banner'
+// `@salesforce/commerce-sdk-react/page-designer` is only stubbed for `PageDesignerProvider`
+// below (see comment there) — the `registry` export it re-exports is the real V2 singleton.
+// `initializeRegistry()` is mocked out (see `../../page-designer/registry` mock above), so
+// the announcement banner's typeId isn't pre-registered; register the real component
+// directly so `<Region>`/`<Component>` render it instead of throwing on discovery.
+import {registry} from '@salesforce/commerce-sdk-react/page-designer'
 
 jest.mock('../../hooks/use-multi-site', () => jest.fn())
 jest.mock('../../hooks/use-update-shopper-context', () => ({
@@ -55,8 +66,22 @@ jest.mock('@salesforce/commerce-sdk-react', () => {
         useDNT: () => ({selectedDnt: undefined, updateDnt: mockUpdateDnt}),
         useUsid: () => ({usid: 'test-usid', getUsidWhenReady: () => Promise.resolve('test-usid')}),
         useGlobalAnchorBlock: jest.fn(),
-        registry: mockRegistry
+        registry: mockRegistry,
+        useComponent: () => ({data: mockEmbeddedHeader, isLoading: false, error: null})
     }
+})
+
+// `useComponent` above returns the embedded header for every test in this suite (it's the
+// mocked module-level implementation, not per-test), so `StorefrontApp` always attempts to
+// render the announcement region. Register the real component once for every test — not just
+// the one that asserts on it — so the other tests don't hit an unregistered typeId, which
+// makes `Component` throw `registry.preload()`'s promise during render with no Suspense
+// boundary above it in `_app`, blanking the whole tree.
+beforeAll(() => {
+    registry.registerComponent(
+        mockEmbeddedHeader.regions[0].components[0].typeId,
+        AnnouncementBanner
+    )
 })
 
 beforeEach(() => {
@@ -183,6 +208,28 @@ describe('App', () => {
         expect(screen.getByRole('main')).toBeInTheDocument()
         expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
         expect(screen.queryByRole('contentinfo')).not.toBeInTheDocument()
+    })
+
+    test('renders the embedded header announcement region above the storefront header', async () => {
+        useMultiSite.mockImplementation(() => resultUseMultiSite)
+        renderWithProviders(
+            <App targetLocale={DEFAULT_LOCALE} defaultLocale={DEFAULT_LOCALE} messages={messages} />
+        )
+
+        // The storefront header chrome is still present (announcement-slot-only integration).
+        // `{hidden: true}` because the desktop nav lives inside `<HideOnMobile>`
+        // (display: {base: 'none', lg: 'block'}), and jsdom doesn't evaluate the `lg`
+        // media query, so testing-library's a11y-tree computation treats it as hidden
+        // (same pattern used in footer/index.test.js and cart/index.test.js).
+        await waitFor(() => {
+            expect(screen.getByRole('navigation', {hidden: true})).toBeInTheDocument()
+        })
+        // The embedded header's announcement region mounted above it, rendering the real
+        // AnnouncementBanner with its authored message. `{hidden: true}` because the open
+        // DntNotification modal marks the rest of the page `aria-hidden` (same reasoning as
+        // the navigation query above).
+        expect(screen.getByRole('status', {hidden: true})).toBeInTheDocument()
+        expect(screen.getByText(mockAnnouncementBanner.message)).toBeInTheDocument()
     })
 
     test('App component updates the basket with correct currency and customer email', async () => {
