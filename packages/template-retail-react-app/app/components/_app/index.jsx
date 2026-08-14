@@ -16,6 +16,7 @@ import {useQuery} from '@tanstack/react-query'
 import {
     useAccessToken,
     useCategory,
+    useComponent,
     useShopperBasketsMutation,
     useUsid
 } from '@salesforce/commerce-sdk-react'
@@ -70,8 +71,9 @@ import {useUpdateShopperContext} from '@salesforce/retail-react-app/app/hooks/us
 // HOCs
 import {withCommerceSdkReact} from '@salesforce/retail-react-app/app/components/with-commerce-sdk-react/with-commerce-sdk-react'
 
-import {PageDesignerProvider} from '@salesforce/commerce-sdk-react/page-designer'
+import {PageDesignerProvider, Region} from '@salesforce/commerce-sdk-react/page-designer'
 import PageDesignerInit from '@salesforce/retail-react-app/app/components/page-designer-init'
+import {EmbeddedSubtreeProvider} from '@salesforce/storefront-next-runtime/design/react/core'
 
 // Localization
 import {IntlProvider} from 'react-intl'
@@ -155,6 +157,10 @@ const StorefrontApp = (props) => {
         parameters: {id: CAT_MENU_DEFAULT_ROOT_CATEGORY, levels: CAT_MENU_DEFAULT_NAV_SSR_DEPTH}
     })
     const categories = flatten(categoriesTree || {}, 'categories')
+    // Embedded content-block header: a singleton Page Designer component (instance id
+    // `header`) that exposes an `announcement` region rendered above the storefront header.
+    // `useComponent` is Page-Designer-mode aware (handles mode/pdToken internally).
+    const {data: embeddedHeader} = useComponent({parameters: {componentId: 'header'}})
     const {getTokenWhenReady} = useAccessToken()
     const {usid} = useUsid()
     const appOrigin = useAppOrigin()
@@ -422,6 +428,14 @@ const StorefrontApp = (props) => {
                                 <Box {...styles.headerWrapper}>
                                     {!isCheckout ? (
                                         <>
+                                            {embeddedHeader && (
+                                                <EmbeddedSubtreeProvider embedded>
+                                                    <Region
+                                                        component={embeddedHeader}
+                                                        regionId="announcement"
+                                                    />
+                                                </EmbeddedSubtreeProvider>
+                                            )}
                                             <AboveHeader />
                                             <Header
                                                 onMenuClick={onOpen}

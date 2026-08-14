@@ -54,4 +54,9 @@ export function initializeRegistry() {
         import('./layouts/mobileGrid3r2c')
     )
     registry.registerImporter('commerce_layouts.carousel', () => import('./layouts/carousel'))
+    registry.registerImporter('commerce_layouts.header', () => import('./layouts/header'))
+
+    registry.registerImporter('commerce_assets.announcementBanner', () =>
+        import('./content/announcement-banner')
+    )
 }
