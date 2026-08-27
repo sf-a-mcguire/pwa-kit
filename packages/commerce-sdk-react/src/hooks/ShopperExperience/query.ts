@@ -5,7 +5,7 @@
  * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import {UseQueryResult} from '@tanstack/react-query'
-import {ShopperExperience} from 'commerce-sdk-isomorphic'
+import {ResponseError, ShopperExperience} from 'commerce-sdk-isomorphic'
 import {ApiClients, ApiQueryOptions, Argument, DataType, NullableParameters} from '../types'
 import {useQuery} from '../useQuery'
 import {mergeOptions, omitNullableParameters, pickValidParams} from '../utils'
@@ -71,6 +71,11 @@ export const usePages = (
     const method = async (options: Options) => {
         if (isPageDesignerMode) {
             const response = await client[methodName](options, true)
+            // rawResponse bypasses the SDK's throwOnBadResponse check, so we replicate it here
+            // to ensure error responses surface as query errors rather than parsed "success" data.
+            if (!response.ok && response.status !== 304) {
+                throw new ResponseError(response)
+            }
             return await response.json()
         }
         return await client[methodName](options)
@@ -144,6 +149,11 @@ export const usePage = (
     const method = async (options: Options) => {
         if (isPageDesignerMode) {
             const response = await client[methodName](options, true)
+            // rawResponse bypasses the SDK's throwOnBadResponse check, so we replicate it here
+            // to ensure error responses surface as query errors rather than parsed "success" data.
+            if (!response.ok && response.status !== 304) {
+                throw new ResponseError(response)
+            }
             return await response.json()
         }
         return await client[methodName](options)
@@ -173,6 +183,9 @@ export const usePage = (
  * @parameter apiOptions - Options to pass through to `commerce-sdk-isomorphic`, with `null` accepted for unset API parameters.
  * @parameter queryOptions - TanStack Query query options, with `enabled` by default set to check that all required API parameters have been set.
  * @returns A TanStack Query query hook with data from the Shopper Experience `getComponent` endpoint.
+ * @see {@link https://developer.salesforce.com/docs/commerce/commerce-api/references/shopper-experience?meta=getComponent| Salesforce Developer Center} for more information about the API endpoint.
+ * @see {@link https://salesforcecommercecloud.github.io/commerce-sdk-isomorphic/classes/shopperexperience.shopperexperience-1.html#getcomponent | `commerce-sdk-isomorphic` documentation} for more information on the parameters and returned data type.
+ * @see {@link https://tanstack.com/query/latest/docs/react/reference/useQuery | TanStack Query `useQuery` reference} for more information about the return value.
  */
 export const useComponent = (
     apiOptions: NullableParameters<Argument<Client['getComponent']>>,
@@ -211,6 +224,11 @@ export const useComponent = (
     const method = async (options: Options) => {
         if (isPageDesignerMode) {
             const response = await client[methodName](options, true)
+            // rawResponse bypasses the SDK's throwOnBadResponse check, so we replicate it here
+            // to ensure error responses surface as query errors rather than parsed "success" data.
+            if (!response.ok && response.status !== 304) {
+                throw new ResponseError(response)
+            }
             return await response.json()
         }
         return await client[methodName](options)
